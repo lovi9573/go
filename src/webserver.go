@@ -1,14 +1,20 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"net/http"
 	"os"
 )
 
 func hello(output http.ResponseWriter, request *http.Request) {
-	file, error := os.Open("html/index.html")
+	fmt.Println(request.URL.Path)
+	if(request.URL.Path == "/"){
+		request.URL.Path = "/index.html"
+	}
+	file, error := os.Open("html"+request.URL.Path)
 	if error != nil && error !=io.EOF {
+		
 		panic(error)
 	}
 	buffer := make([]byte, 2048)
