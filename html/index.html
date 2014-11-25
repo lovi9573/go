@@ -1,44 +1,530 @@
-<html>
-<head>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-
-<link rel="stylesheet" href="main.css">
+<!-- <head>
+<title>wrens</title>
 </head>
 <body>
+wrens
+</body> -->
 
-<div  class="container ">
-	<div class="top-bar">
-		<div data-spy="affix" class="white-back">
-			<div class="page-header">
-				<h1>Quota<span class="lessbold">nizer</span>
-					<small>A friendly disk usage utility</small>
-				</h1>
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>Learn Go</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
+    <script src="http://getbootstrap.com/assets/js/ie-emulation-modes-warning.js"></script>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Custom styles for this template -->
+    <link href="http://getbootstrap.com/examples/carousel/carousel.css" rel="stylesheet">
+    <link href="css/header_image.css" rel="stylesheet">
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+  </head>
+<!-- NAVBAR
+================================================== -->
+  <body id="page-top">
+     <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div id="page-top" class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Go Wrens</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#history">History</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#install">Install</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#links">Links</a>
+                    </li>
+                   
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Code Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="go-basic-examples.html">Go Basics</a>
+                            </li>
+                            <li>
+                                <a href="parallel-mergesort-example.html">Mergesort Example</a>
+                            </li>
+                            <li>
+                                <a href="linked-list-example.html">Linked List Example</a>
+                            </li>
+                            <li>
+                                <a href="prime-finder-example.html">Primer Finder Example</a>
+                            </li>
+                        </ul>
+                    </li>                     
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+
+    <!-- Carousel
+    ================================================== -->
+    <header class="image-bg-fluid-height">
+	<a class="page-scroll" href="#featurette" role="button">
+        <img class="img-responsive img-center"  style="opacity:0.0;" src="http://placehold.it/250x350&text=Go." alt=""> 
+	</a>
+    </header> 
+
+<!--<div class="jumbotron" style="background-color:white;">
+    </div>-->
+
+
+
+   <!-- Wrap this part of page in a container to center all the content. -->
+   <div class="container" style="padding-left:75px; padding-right:75px;">
+
+   <!-- Content Section -->
+    <section id="history">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="section-heading">Description and History:</h1>
+                    <p class="lead section-lead">Write quickly. Build quickly. Run quickly.</p>
+					<p class="section-paragraph"><a href="http://golang.org/">Go</a> is a compiled, garbage collected, concurrent language developed by Google. Specifically, the language was developed in <a href="http://en.wikipedia.org/wiki/Go_(programming_language)">2007</a> by Robert Griesemer, Rob Pike (whose name you may recognize from the book, "The Unix Programming Environment"), and Ken Thompson (who worked with Dennis Ritchie to create Unix). If you're coming from the likes of C or Java, you'll recognize that much of the syntax and the style, while different, will not seem very foreign to you. However, one of Go's strengths is that it takes out a lot of the messy stuff in C, and creates a more consistent, easier to learn, and surprisingly elegant language. For example, Go has pointers, but no pointer arithmetic. Along the same vein of simplifying things, the ++ and -- operators are statements in go and not expressions. You'll find that out if you try and increment a variable inside of a Println function. Go also only allows the postfix use of those operators on top of not being able to embed them into expressions. This simplifies the syntax and gets rid of the messy issues surrounding order of operation. Further, you may be surprised initially that Go doesn't have the keywords: do, do while, or while, to make loops. Instead, Go uses a beefed up for loop that accomplishes all those things in one. As you dive into Go and explore it's design and use, I think you may agree that the one theme that persists is simply the idea or end goal that software should be simple. </p>
+					<h3>Go at a glance</h3>
+					<p>This list would be the 30 second elevator pitch of what Go is, and what Go has:<ul>
+							<li>Compiled</li>
+							<li>Concurrent</li>
+							<li>Imperative</li>
+							<li>Statically typed</li>
+							<li>Clean syntax</li>
+							<li>Simple type system</li>
+							<li>Concurrency primitives</li>
+							<li>Rich standard library</li>
+							<li>Great tools</li>
+							<li>Open source</li></ul></p>
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+
+  <!-- Content Section -->
+    <section id="install">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="section-heading">Installing Go:</h1>
+                    <p class="lead section-lead">Give it a try. It's pretty easy to get Go-ing.</p>
+                    <p class="section-paragraph"><li> Click <a href="https://golang.org/dl/">here</a> to install go. 
+			<li>To make sure it's working properly, we'll make a short test program. Create a new file named hello.go and type the following:</li><p></p>
+
+
+<pre class="prettyprint lang-go;" style="text-align: left; font-size:11pt; padding-left: 20px; padding-top: 10px; padding-bottom: 20px;">
+<code>package main
+
+import "fmt"
+
+func main() {
+    fmt.Printf("Hello World!\n")
+}</code></pre>
+
+<li>Run your program as follows:</li><p></p>
+<pre>$ go run hello.go
+Hello World!</pre>
+
+<li>You can also build your program and it will create an executable file with the same name as the source code file that was built:</li><p></p>
+<pre>$ go build hello.go
+$ ./hello
+Hello World!</pre>
+
+<p>If it prints the message "Hello World!" then you'll know everything is working. Congratulations, you just built your first Go program!</p>
+<h2>Setting Up Vim</h2>
+<p>Since Go is a new language, next you'll probably want to set up Vim with the go plugins and syntax highlighting. The following instructions are from the readme.txt file you'll be able to find in the ../misc/vim/ directory where go was installed. Here are the instructions for editing your ".vimrc" file:</p>
+<pre class="prettyprint lang-bash;" style="text-align: left; font-size:9pt; padding-left: 20px; padding-top: 10px; padding-bottom: 20px;">
+#To use all the Vim plugins, add these lines to your $HOME/.vimrc.
+
+# Some Linux distributions set filetype in /etc/vimrc.
+# Clear filetype flags before changing runtimepath to force Vim to reload them.
+if exists("g:did_load_filetypes")
+  filetype off
+  filetype plugin indent off
+endif
+set runtimepath+=$GOROOT/misc/vim    # replace $GOROOT with the output of: go env GOROOT
+filetype plugin indent on
+syntax on</pre>
+<p>Now, open hello.go back up in vim and see how pretty it is.</p>
+<h2>Setting Up Your Environment</h2>
+<p>Last, watch this short video to help you set up your workspace environment so you can install and use your own programs and more. It's only five minutes long and the guy's got a cool accent.</p>
+				<div>
+	       	  	<iframe class="embed-responsive-item" width="560" height="315" src="https://www.youtube.com/embed/XCsL89YtqCs" frameborder="0" allowfullscreen></iframe>
+				</div>	
+
+				<h2>Using Gccgo</h2>
+				<p>For some reason, getting things going with gccgo was quite a bit harder than I anticipated it would be. I read <a href="https://golang.org/doc/install/gccgo">golang's</a> page here, specifically, the section <a href="https://golang.org/doc/install/gccgo#Using_gccgo">here</a>, but I didn't have much luck at getting any programs compiled to the point where I could run them. Using the -c flag, I could get the comiple object code, and I used the -o flag to link the object code and create an executable, but every time I tried to run the executable, I got this error:</p>
+				<pre class="prettyprint lang-go;">
+[msaunder@onyx go]$ gccgo -c hello.go 
+[msaunder@onyx go]$ gccgo -o hello hello.o
+[msaunder@onyx go]$ ./hello 
+no debug info in ELF executable errno -1
+fatal error: no debug info in ELF executable</pre>
+				<p>Finally, I was able to get the answer from professor Jim Buffenbarger at Boise State University, who lead us to the -g flag that worked to succesfully compile our go programs. The first way produces the classic a.out executable file, and the second method uses the -o flag where you can specify a name for your output file:
+				<pre class="prettyprint go-lang;">
+[msaunder@onyx go]$ gccgo -g hello.go 
+[msaunder@onyx go]$ ./a.out 
+Hello World!
+[msaunder@onyx go]$ gccgo -g -o hello hello.go
+[msaunder@onyx go]$ ./hello 
+Hello World!</pre>
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+
+  <!-- Content Section -->
+    <section id="links">
+            <div class="row">
+                <div class="col-lg-12">
+                    <h1 class="section-heading">More Resources:</h1>
+                    <p class="lead section-lead">The basic idea behind go is that programming should be simple. Here are some resources that should make getting started easier.</p>
+					<ul>
+						
+						<li><a href="https://golang.org">Go Lang Homepage</a></li>
+						<li><a href="https://golang.org/ref/spec">The Go Programming Language Specification</a></li>
+						<li><a href="https://golang.org/doc/">The Go Programming Language Documentation</a></li>
+						<li><a href="http://www.golang-book.com/">eBook: Introduction To Programming in Go</a></li>
+						<li><a href="https://gobyexample.com/">Go By Example</a> (Page with a ton of example code in Go)</li>
+						<li><a href="http://dave.cheney.net/resources-for-new-go-programmers">Resources for New Go Programmers</a> (Reference Page with lots of links to other good resources)</li>
+					</ul>
+					<p>Here are some sites that introduce you to Go, while letting you code and compile in the browser: </p>
+					<ul>
+						<li><a href="http://tour.golang.org/#1">Go Lang Tour</a></li>
+						<li><a href="http://play.golang.org/">The Go Playground</a></li>
+					</ul>
+			<p>Here's a playlist of 9 short videos that do a great job at getting you set up and running through some of the basics in go:</p>
+			<!-- 16:9 aspect ratio -->
+			<!-- <div class="embed-responsive embed-responsive-16by9"> -->
+			<div>
+			<iframe width="560" height="315" src="https://www.youtube.com/embed/vUqKVLlPV_s?list=PL6_rZCWyzaJ-O1_bOy36odt2aqmLWGrP3" frameborder="0" allowfullscreen></iframe>
 			</div>
-		</div>
+
+			 <h3>Characteristic Table:</h3>
+	<span>The following table lists important characteristics of the go language and how they relate to several well known popular languages.</span> 
+	<table class="table table-bordered table-striped">
+		<thead>
+		<th>
+		<!-- td>Feature / Characteristic</td -->
+		<td style="font-weight:bold;">Go</td>
+		<td style="font-weight:bold">C </td>
+		<td style="font-weight:bold">Java7</td>
+		<td style="font-weight:bold">Python</td>
+	</th>
+	</thead>
+	<tr>
+		<td style="font-weight:bold">Typing</td>
+		<td>Static / Strong</td>
+		<td>Static / Strong</td>
+		<td>Static / Strong</td>
+		<td>Dynamic / Strong</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Scoping</td>
+		<td>static / lexical using blocks</td>
+		<td>static / lexical using blocks</td>
+		<td>static / lexical using blocks</td>
+		<td>static / lexical using namespaces</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Loops</td>
+		<td>for</td>
+		<td>for, while, do-while</td>
+		<td>for, while, do-while, foreach</td>
+		<td>foreach, while</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Generics</td>
+		<td>No</td>
+		<td>Through Pointers</td>
+		<td>Yes</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Type inference </td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Pointer arithmetic</td>
+		<td>No</td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Inheritance</td>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Allows unused imports/variables</td>
+		<td>No</td>
+		<td>Yes</td>
+		<td>Yes(with warning)</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Exception handling</td>
+		<td>Errors are part of function return.  <br>Panics are worked around with recover()</td>
+		<td>No</td>
+		<td>Yes</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">First class functions</td>
+		<td>Yes</td>
+		<td>through pointers</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Supports closures</td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Multiple returns</td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Function literals</td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+		<td>Yes</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Channel primitive</td>
+		<td>Yes</td>
+		<td>No</td>
+		<td>No</td>
+		<td>No</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Variable length array</td>
+		<td>In Language</td>
+		<td>Library</td>
+		<td>Library</td>
+		<td>In Language </td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Map</td>
+		<td>In Language</td>
+		<td>Library</td>
+		<td>Library</td>
+		<td>In Language</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Concurrency</td>
+		<td>In Language</td>
+		<td>Library</td>
+		<td>Library</td>
+		<td>Library</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">String</td>
+		<td>In Language</td>
+		<td>Library</td>
+		<td>In Language</td>
+		<td>In Language</td>
+	</tr>
+	<tr>
+		<td style="font-weight:bold">Select</td>
+		<td>In Language</td>
+		<td>Library</td>
+		<td>Library</td>
+		<td>Library</td>
+	</tr>
+</table>
+
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+
+    </div>
+
+
+
+
+    <!-- Marketing messaging and featurettes
+    ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+
+
+      <!-- START THE FEATURETTES -->
+<section>
+     
+<!--	
+	<hr id="featurette" class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Start with the Basics. <span class="text-muted">Click on the gopher to dig in.</span></h2>
+          <p class="lead">To get the wheels rolling, we'll go over some basic syntax and language constructs in here. For example, you may be surprised to know that go only has for loops. Do and while are not keywords in go. Click here to see more of the basics.</p>
+        </div>
+        <div class="col-md-5">
+	 <a href="go-basic-examples.html">
+          <img class="featurette-image img-responsive" src="http://media.tumblr.com/2d8b47518afbc0a63dd2005bfd60910c/tumblr_inline_n9dkuzlMBL1qcutq7.png" alt="Generic placeholder image">
+          <img src="http://talks.golang.org/2013/advconc/gopherswim.jpg" alt="Generic placeholder image" width="500" height="500">
+	</a>
+        </div>
+      </div>
+
+-->
+
+	<hr id="featurette" class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+	 <a href="go-basic-examples.html">
+          <img src="http://talks.golang.org/2013/advconc/gopherswim.jpg" alt="Generic placeholder image" width="500" height="500">
+         </a>
 	</div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Start with the Basics. <span class="text-muted">Click on the gopher to dig in.</span></h2>
+          <p class="lead">To get the wheels rolling, we'll go over some basic syntax and language constructs in here. For example, you may be surprised to know that go only has for loops. Do and while are not keywords in go. Click here to see more of the basics.</p>
+        </div>
+      </div>
 
 
-	<table class="table">
-		<tr>
-			<th>Path</th>
-			<th>Size</th>
-			<th>Options</th>
-		</tr>
-		<tr>
-			<td>/xyz</td>
-			<td>100MB</td>
-			<td><a href="javascript:void(0)">DELETE</a></td>
-		</tr>
-		<tr>
-			<td>/abc</td>
-			<td>10MB</td>
-			<td><a href="javascript:void(0)">DELETE</a></td>
-		</tr>
+      <hr class="featurette-divider">
 
-	</table>
-</div>
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Mergesort Code. <span class="text-muted">This should help sort things out.</span></h2>
+          <p class="lead">Mergesort is an O(n*logn) comparison-based sorting algorithm you've probably already seen or at least heard of before. It works by repeatedly breaking down an unsorted list into single 1 element sorted items. In that state, it compares the "sorted" sublists and merges everything back together resulting in a final sorted list. </p>
+        </div>
+        <div class="col-md-5">
+	 <a href="parallel-mergesort-example.html">
+          <img class="featurette-image img-responsive" src="http://www.unixstickers.com/image/cache/data/stickers/golang/golang.sh-600x600.png" alt="Generic placeholder image">
+         </a>
+	</div>
+      </div>
 
-</body>
+
+     <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-5">
+	 <a href="linked-list-example.html">
+          <img class="featurette-image img-responsive" src="http://fc03.deviantart.net/fs70/f/2014/154/a/0/go_lang_mascot_by_kirael_art-d7kunhu.gif" alt="Generic placeholder image">
+          </a>
+	 </div>
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Linked List Code. <span class="text-muted">C'mon, Go-pher It.</span></h2>
+          <p class="lead"> Hyperbolically speaking, the Double-Linked List is probably every new Computer Science students most favorite data structure! A Linked List is essentially a list composed of individual nodes that generally hold an item of data and also information about how to get to the next or previous node in the list. </p>
+        </div>
+      </div>
+
+
+
+      <hr class="featurette-divider">
+
+      <div class="row featurette">
+        <div class="col-md-7">
+          <h2 class="featurette-heading">Find a Prime Number Code. <span class="text-muted">Here's a Prime Example.</span></h2>
+          <p class="lead">A prime number is a positive number that can only be divided by 1 and itself. For most smaller numbers, it's not too hard to figure out if a number's prime or not, but if I'd like to know about a bigger number, say 95,869, and I don't feel like google'ing for the answer, here's a few lines of code that could help.
+  </p>
+        </div>
+        <div class="col-md-5">
+	 <a href="prime-finder-example.html">
+          <img class="featurette-image img-responsive" style="padding-top:60px;" src="https://talks.golang.org/2012/splash/appenginegophercolor.jpg" alt="Generic placeholder image">
+          </a>
+	 </div>
+      </div>
+
+      <hr class="featurette-divider" style="margin-bottom:-50px;">
+
+</section>
+      <!-- /END THE FEATURETTES -->
+
+
+      <!-- FOOTER -->
+      <footer>
+        <p class="pull-right"><a class="page-scroll" href="#page-top">Back to top</a></p>
+        <p>&copy; 2014 Team Wrens &middot; <a href="#">No Privacy</a> &middot; <a href="#">No Terms</a></p>
+      </footer>
+
+    </div><!-- /.container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+    <script src="http://getbootstrap.com/assets/js/docs.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script src="getbootstrap.com/assets/js/ie10-viewport-bug-workaround.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.3/jquery.easing.min.js"></script>
+
+    <script>
+    // jQuery for page scrolling feature - requires jQuery Easing plugin
+    $(function() {
+        $('a.page-scroll').bind('click', function(event) {
+            var $anchor = $(this);
+            $('html, body').stop().animate({
+                scrollTop: $($anchor.attr('href')).offset().top
+            }, 1500, 'easeInOutExpo');
+            event.preventDefault();
+        });
+    });
+</script>
+  </body>
 </html>
+
+
+
+
+
