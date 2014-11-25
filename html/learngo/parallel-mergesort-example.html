@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Learn Go - Mergesort</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/modern-business.css" rel="stylesheet">
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+
+    <!-- Custom Fonts -->
+    <link href="font-awesome-4.1.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Go Wrens</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a href="index.html#history">History</a>
+                    </li>
+                    <li>
+                        <a href="index.html#install">Install</a>
+                    </li>
+                    <li>
+                        <a href="index.html#links">Links</a>
+                    </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Examples <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+					       
+						    <li>
+                                <a href="go-basic-examples.html">Go Basics</a>
+                            </li>
+                            <li>
+                                <a href="parallel-mergesort-example.html">Mergesort Example</a>
+                            </li>
+                            <li>
+                                <a href="linked-list-example.html">Linked List Example</a>
+                            </li>
+                            <li>
+                                <a href="prime-finder-example.html">Primer Finder Example</a>
+                            </li>
+
+					</ul>
+                    </li> 
+                   
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <!-- Page Content -->
+    <div class="container">
+
+        <!-- Page Heading/Breadcrumbs -->
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">Parallel Mergesort
+                    <small>Sort an array in parallel using goroutines and mergesort</small>
+                </h1>
+                <ol class="breadcrumb">
+                    <li><a href="index.html">Home</a>
+                    </li>
+                    <li class="active">Parallel mergesort example</li>
+                </ol>
+            </div>
+        </div>
+        <!-- /.row -->
+
+	<div class="row">
+            <div class="col-lg-12">
+		Most of the code example below is a go implementation of a standard mergesort.  There are two important differences between this code and the code you would see in a language such as C or Java.  Both differences are found in the sort so we can ignore the merging code to spot the differences. 
+The first is that in a C or Java implementation you would expect to see three parameters passed to the mergesort function, an array reference, a start, and an end index.  In the go program we can see that the same can be accomplished with a single go slice.  
+The other important difference is the use of parallel processing of the sort.  For simplicity only the first bisection of the array is done in parallel.  We can see in main that go makes this easy by simply calling a function using the "go" keyword and waiting for the functions to finish using go's channels. 
+            </div>
+	</div>
+	<!-- /.row -->
+
+
+        <!-- Content Row -->
+        <div class="row">
+           
+		<div class="col-md-12">
+		<h2>mergesort.go</h2>
+		<pre class=" prettyprint lang-java"><code style=font-size:11pt>
+			
+   package main
+   
+   import (
+       "fmt"
+       "math/rand"
+       "runtime"
+   )
+   
+   /**
+   * begins a mergesort on given slice and uses channel for synchronization with other threads
+   */
+   func pmergesort(order chan bool, ar [] int) {
+   	mergesort(ar)
+   	order <- true
+   }
+   
+   /**
+   * Runs a mergesort on the given slice
+   */
+   func mergesort(ar [] int) {
+   	l := len(ar)
+   	if l <= 1 {
+   		return
+   	}
+   	left := ar[ :l/2]
+   	right := ar[l/2: ]
+   	mergesort(left) 
+   	mergesort(right)
+   	merge(left,right, ar)
+   }
+   
+   /**
+   * merges two slices' elements into sorted order into a final slice.
+   */
+   func merge(left [] int, right [] int, ar [] int)  {
+   	var tmp = make([]int, len(left)+len(right))
+   	a := 0
+   	b := 0
+   	t := 0
+   	for  a < len(left)  || b < len(right) {
+   		if b == len(right) || a < len(left) && left[a] < right[b] {
+   			tmp[t] = left[a]
+   			a +=1
+   		}else {
+   			tmp[t] = right[b]
+   			b+=1
+   		}
+   		t+=1	
+   	}
+   	for i := range ar {
+   		ar[i] = tmp[i]
+   	}
+   }
+   
+   func main() {
+   	//Create a random array to be sorted.
+   	size := 10 //20000000  
+   	var ar = make([] int, size)  
+   	for i := range ar {  
+   		ar[i] = rand.Intn(2000)
+   	}
+   	fmt.Print("original:")
+   	fmt.Println(ar)
+   
+   	//Create parallel mergesort goroutines
+   	runtime.GOMAXPROCS(2)
+   	order := make(chan bool)
+   	go pmergesort(order, ar[0:size/2])
+   	go pmergesort(order, ar[size/2:])
+   	<- order  //Wait here until the two routines finish
+   	<- order
+   	
+   	//Merge the two sides
+   	merge(ar[0:size/2], ar[size/2:size], ar)
+   	fmt.Print("sorted:") 
+       	fmt.Println(ar)
+   }
+
+
+
+
+		</code></pre>
+            </div>
+        </div>
+        <!-- /.row -->
+
+        <hr>
+
+        <!-- Footer -->
+        <footer>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>Copyright &copy; Team Wrens 2014</p>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+    <!-- /.container -->
+
+    <!-- jQuery -->
+    <!--  <script src="js/jquery.js"></script> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+</body>
+
+</html>
