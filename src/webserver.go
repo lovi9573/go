@@ -17,6 +17,11 @@ func hello(output http.ResponseWriter, request *http.Request) {
 		
 		panic(error)
 	}
+	if (request.URL.Path[len(request.URL.Path)-3:] == "css"){
+		fmt.Println("====== CSS Found ====")
+		header := output.Header()
+		header.Set("Content-Type","text/css")
+	}
 	buffer := make([]byte, 2048)
 	
 	for {
