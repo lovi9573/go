@@ -10,7 +10,7 @@ import (
 func hello(output http.ResponseWriter, request *http.Request) {
 	fmt.Println(request.URL.Path)
 	if(request.URL.Path == "/"){
-		request.URL.Path = "/quotanizer/index.html"
+		request.URL.Path = "/index.html"
 	}
 	file, error := os.Open("html"+request.URL.Path)
 	if error != nil && error !=io.EOF {
