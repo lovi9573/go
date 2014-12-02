@@ -3,8 +3,6 @@ package main
 import(
     "path/filepath"
     "os"
-    "fmt"
-    "strconv"
 )
 
 //var displaySize int64
