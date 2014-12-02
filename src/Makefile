@@ -1,10 +1,9 @@
+PATH=/usr/bin:bin
 
+all: create
 
-all: server
+create:
+	gccgo -g -o files files.go directory.go parallelmergesort.go
 
-gccserver:
-	gccgo -g webserver.go -o ../webserver
-
-server:
-	go build webserver.go
-	mv webserver ../
+clean:
+	rm files

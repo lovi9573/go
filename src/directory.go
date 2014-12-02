@@ -2,7 +2,7 @@ package main
 
 
 type directory struct {
-	size  int
+	size  int64
 	path  string
 }
 
