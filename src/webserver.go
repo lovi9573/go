@@ -35,7 +35,14 @@ func hello(output http.ResponseWriter, request *http.Request) {
 	}
 }
 
+func submit(output http.ResponseWriter, request *http.Request) {
+	request.ParseForm()
+	fmt.Println(request.PostForm)
+	http.Redirect(output, request, "/quotanizer/index.html", 1);
+}
+
 func main() {
 	http.HandleFunc("/", hello)
+	http.HandleFunc("/submit", submit)
 	http.ListenAndServe(":8080", nil)
 }
