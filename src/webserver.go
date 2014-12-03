@@ -39,21 +39,23 @@ func hello(output http.ResponseWriter, request *http.Request) {
 func submit(output http.ResponseWriter, request *http.Request) {
 	request.ParseForm()
 
-	fmt.Printf("FilePath: %s\nMinimum File Size: %s\n", request.PostForm["dir"][0], request.PostForm["minSize"][0])
+	dir := request.PostForm["dir"][0]
+	minSize := request.PostForm["minSize"][0]
+	fmt.Printf("FilePath: %s\nMinimum File Size: %s\n", dir, minSize)
 
 	//Run external program and wait for it to finish
-	cmd := exec.Command("sleep", "5")
+	cmd := exec.Command("./driver.sh", dir, minSize)
 	err := cmd.Run()
 	if err != nil {
 		fmt.Println(err)
 	}
 
 	//Send browser the the generated page
-	http.Redirect(output, request, "/index.html", 302)
+	http.Redirect(output, request, "/out.html", 302)
 }
 
 func main() {
 	http.HandleFunc("/", hello)
 	http.HandleFunc("/submit", submit)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8081", nil)
 }
