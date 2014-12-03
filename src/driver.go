@@ -46,6 +46,19 @@ func main(){
 
 	html += "<div class=\"container\"><div class=\"top-bar\"><div data-spy=\"affix\" class=\"white-back\"><div class=\"page-header\">"
 	html += "<h1>Quota<span class=\"lessbold\">nizer</span><small> A friendly disk usage utility</small></h1></div></div></div>"
+	html += "<form action='/submit' method='post'>"
+	html += "<div class='form-group'>"
+	html += "<label for='dir'>Directory to analyze</label>"
+	html += "<input type='text' name='dir' placeholder='Directory'>"
+	html += "</div>"
+	html += "<div class='form-group'>"
+	html += "<label for='minSize'>Directory to analyze</label>"
+	html += "<input type='text' name='minSize' value='0'>"
+	html += "</div>"
+	html += "<div class='form-group'>"
+	html += "<input class='btn btn-info' type='submit' value='Submit'>"
+	html += "</div>"	
+	html += "</form>"
 	html += "<table class=\"table\"><tr><th>Path</th><th>Size</th><th>Options</th></tr>"
 
 
