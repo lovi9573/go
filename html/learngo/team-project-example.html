@@ -97,13 +97,13 @@
         <!-- Page Heading/Breadcrumbs -->
         <div class="row">
             <div class="col-lg-12">
-                <h1 class="page-header">Parallel Mergesort
-                    <small>Sort an array in parallel using goroutines and mergesort</small>
+                <h1 class="page-header">Team Project: Quotanizer
+                    <small>A friendly disk usage utility</small>
                 </h1>
                 <ol class="breadcrumb">
                     <li><a href="index.html">Home</a>
                     </li>
-                    <li class="active">Parallel mergesort example</li>
+                    <li class="active">Team Project</li>
                 </ol>
             </div>
         </div>
@@ -111,19 +111,211 @@
 
 	<div class="row">
             <div class="col-lg-12">
-		Most of the code example below is a go implementation of a standard mergesort.  There are two important differences between this code and the code you would see in a language such as C or Java.  Both differences are found in the sort so we can ignore the merging code to spot the differences. 
-The first is that in a C or Java implementation you would expect to see three parameters passed to the mergesort function, an array reference, a start, and an end index.  In the go program we can see that the same can be accomplished with a single go slice.  
-The other important difference is the use of parallel processing of the sort.  For simplicity only the first bisection of the array is done in parallel.  We can see in main that go makes this easy by simply calling a function using the "go" keyword and waiting for the functions to finish using go's channels. 
+
             </div>
 	</div>
 	<!-- /.row -->
 
 
         <!-- Content Row -->
+          
+        	
         <div class="row">
-           
 		<div class="col-md-12">
-		<h2>mergesort.go</h2>
+		<h2>webserver.go</h2>
+			<p>This program creates a webserver that can serve html pages.<p>
+
+		<pre class="prettyprint lang-go;" style="text-align: left; font-size:11pt; padding-left: 20px; padding-top: 10px; padding-bottom: 20px;"><code>
+package main
+
+import (
+	"fmt"
+	"io"
+	"net/http"
+	"os"
+)
+
+func hello(output http.ResponseWriter, request *http.Request) {
+	fmt.Println(request.URL.Path)
+	if(request.URL.Path == "/"){
+		request.URL.Path = "/index.html"
+	}
+	file, error := os.Open("html"+request.URL.Path)
+	if error != nil && error !=io.EOF {
+		
+		panic(error)
+	}
+	if(request.URL.Path[len(request.URL.Path)-3:] == "css"){
+		header := output.Header()
+		header.Set("Content-Type", "text/css")
+	}
+	buffer := make([]byte, 2048)
+	
+	for {
+		n,error := file.Read(buffer)
+		if error != nil && error !=io.EOF {
+			panic(error)
+		}
+		if n == 0 {
+			break
+		}
+		io.WriteString(output, string(buffer[:n]))
+	}
+}
+
+func main() {
+	http.HandleFunc("/", hello)
+	http.ListenAndServe(":8080", nil)
+}
+
+
+</code></pre>
+
+
+
+	<h2>files.go</h2>
+	<p>This program traverses the directory and gets the folder sizes. Then it uses mergesort to order the results by file size.<p>
+
+		<pre class="prettyprint lang-go;" style="text-align: left; font-size:11pt; padding-left: 20px; padding-top: 10px; padding-bottom: 20px;"><code>
+package main
+
+import(
+    "path/filepath"
+    "os"
+)
+
+func getData(searchDir string) []directory {
+
+    fileList := []directory{}
+
+    filepath.Walk(searchDir, func(path string, f os.FileInfo, err error) error{
+	    if f.IsDir(){					    //if a directory is found
+		fileList = append(fileList, directory{0, path})     //add it to the list
+	    }
+
+	return nil
+    })
+
+    //goes through the found directories to calculate the total size 
+    for i := 0; i&ltlen(fileList); i++ {
+        filepath.Walk(fileList[i].path, func(path string, f os.FileInfo, err error) error{
+	    fileList[i].size += f.Size()
+	    return nil
+	})
+    }
+
+    pmergesort(fileList)
+
+    return fileList
+}
+</code></pre>
+
+
+
+
+
+
+		<h2>main.go</h2>
+<p>This is the driver class. This uses all the other classes and spits out an html page with the output of the program.<p>
+	<pre class="prettyprint lang-go;" style="text-align: left; font-size:11pt; padding-left: 20px; padding-top: 10px; padding-bottom: 20px;">
+<code>
+package main
+
+import(
+    "fmt"
+    "os"
+    "strconv"
+)
+
+var size int64 = 0
+var start string = ""
+
+func main(){
+
+    //there is either no arguments or 2.
+    //starting location first followed by size
+    switch len(os.Args){
+
+    case 1:
+	start = "."
+	size = 0
+    case 3:
+	start = os.Args[1]
+	j, err := strconv.Atoi(os.Args[2])
+
+	if err != nil {
+	    fmt.Println("Incorrect size")
+	    os.Exit(1)
+	}
+
+	size = int64(j)
+
+    default:
+	fmt.Println("Incorrect arguments")
+	fmt.Println("driver or driver <start location> <files sizes greater then>")
+	os.Exit(1)
+    
+
+    directory := getData(start)
+
+	//building a webpage using string concatenation...
+	html := "&lthtml>&lthead>"
+	html += "&ltlink rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css\">"
+	html += "&ltscript src=\"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js\">&lt/script>"
+	html += "&ltscript src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js\">"
+	html += "&lt/script>%ltlink rel=\"stylesheet\" href=\"main.css\">%lt/head>%ltbody>"
+
+	html += "&ltdiv class=\"container\">%ltdiv class=\"top-bar\">%ltdiv data-spy=\"affix\" class=\"white-back\">%ltdiv class=\"page-header\">"
+	html += "&lth1>Quota%ltspan class=\"lessbold\">nizer%lt/span>%ltsmall> A friendly disk usage utility%lt/small>%lt/h1>%lt/div>%lt/div>%lt/div>"
+	html += "&lttable class=\"table\">%lttr>%ltth>Path%lt/th>%ltth>Size%lt/th>%ltth>Options%lt/th>%lt/tr>"
+
+
+	flag := false
+	for i := len(directory)-1; i &gt= 0; i-- {
+	dir := directory[i]
+
+		//only adds items to the list that are larger than the size passed as command line arg...
+		if dir.size &gt= size {
+		flag = true;
+		count :=0
+		for ; dir.size &gt=1000; count++ {
+			dir.size /= 1000
+		}
+
+		output := strconv.FormatInt(dir.size, 10)
+		switch count {
+		case 0:
+			output += " bytes"
+		case 1:
+			output += " KB"
+		case 2:
+			output += " MB"
+		case 3:
+			output += " GB"
+		}
+
+		html += "&lttr>%lttd>" + dir.path  + "%lt/td>%lttd>" + output
+		html += "&lt/td>%lttd>%lta href=\"javascript:void(0)\">DELETE%lt/a>%lt/td>%lt/tr>"
+		}
+    }
+
+	if !flag {
+	html += "&lttr>%lttd>No items fit the specified search critera. Please try again.%lt/tr>%lt/td>"
+	}
+
+	html += "&lt/table>%lt/div>%lt/body>%lt/html>"
+	fmt.Println(html);
+
+}
+</code></pre>
+
+
+
+
+
+<h2>mergesort.go</h2>
+<p>Yep, here's mergesort again, but now we actually use it.<p>
+
 		<pre class=" prettyprint lang-java"><code style=font-size:11pt>
 			
    package main
@@ -139,7 +331,7 @@ The other important difference is the use of parallel processing of the sort.  F
    */
    func pmergesort(order chan bool, ar [] int) {
    	mergesort(ar)
-   	order <- true
+   	order &lt- true
    }
    
    /**
@@ -147,7 +339,7 @@ The other important difference is the use of parallel processing of the sort.  F
    */
    func mergesort(ar [] int) {
    	l := len(ar)
-   	if l <= 1 {
+   	if l &lt= 1 {
    		return
    	}
    	left := ar[ :l/2]
@@ -165,7 +357,7 @@ The other important difference is the use of parallel processing of the sort.  F
    	a := 0
    	b := 0
    	t := 0
-   	for  a < len(left)  || b < len(right) {
+   	for  a &lt len(left)  || b &lt len(right) {
    		if b == len(right) || a < len(left) && left[a] < right[b] {
    			tmp[t] = left[a]
    			a +=1
@@ -208,6 +400,16 @@ The other important difference is the use of parallel processing of the sort.  F
 
 
 		</code></pre>
+
+
+<p style="margin-bottom:60px"></p>
+
+<div class="row text-center">
+	 <a href="quotanizer/index.html">
+          <img class="img-responsive" style="margin-left:250px; margin-bottom:-20px; height:350px" src="http://www.qureet.com/blog/wp-content/uploads/2013/11/jumbo_gopher-4bf98fbc72cc188289ba2b458d4ce680.png" alt="Generic placeholder image">
+         </a>
+	</div>
+
             </div>
         </div>
         <!-- /.row -->
