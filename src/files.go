@@ -5,29 +5,8 @@ import(
     "os"
 )
 
-//var displaySize int64
-
 func getData(searchDir string) []directory {
    
-//user can pass a directory in the current 
-//directory or pass nothing in and the 
-//program will use the current directory
-//    switch len(os.Args) {
-    
-//    case 1:
-//	displaySize = 0
-//    case 2:
-//	other, err := strconv.Atoi(os.Args[1])
-//	displaySize = int64(other)
-//
-//	if err != nil {
-//	    fmt.Println("TODO")
-//	}
-//    default:
-//	fmt.Println("Incorrect Number of Arguments")
-//	os.Exit(1)
-//    }
-
     fileList := []directory{}
 
     //walks through the directories starting at the searchDir var
@@ -48,15 +27,6 @@ func getData(searchDir string) []directory {
     }
 
     pmergesort(fileList)
-
-//    for i := len(fileList)-1; i >= 0; i-- { 
-	
-//	f := fileList[i]
-	
-//	if f.size >= displaySize {
-//	    fmt.Println(f.path, f.size)
-//	}
-//    }
 
     return fileList
 }
