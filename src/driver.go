@@ -19,7 +19,7 @@ func main(){
 	start = "."
 	size = 0
     case 3:
-	start = os.Args[1] + "/"
+	start = os.Args[1]
 	j, err := strconv.Atoi(os.Args[2])
 
 	if err != nil {
