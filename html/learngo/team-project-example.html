@@ -74,7 +74,7 @@
                                 <a href="prime-finder-example.html">Primer Finder Example</a>
                             </li>
 							<li>
-                                <a href="quotanizer/index.html">Run Team Project</a>
+                                <a href="/quotanizer/form.html">Run Team Project</a>
                             </li>
 							<li>
                                 <a href="team-project-example.html">Team Project Source Code</a>
@@ -133,6 +133,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"os/exec"
 )
 
 func hello(output http.ResponseWriter, request *http.Request) {
@@ -142,7 +143,7 @@ func hello(output http.ResponseWriter, request *http.Request) {
 	}
 	file, error := os.Open("html"+request.URL.Path)
 	if error != nil && error !=io.EOF {
-		
+
 		panic(error)
 	}
 	if(request.URL.Path[len(request.URL.Path)-3:] == "css"){
@@ -150,7 +151,7 @@ func hello(output http.ResponseWriter, request *http.Request) {
 		header.Set("Content-Type", "text/css")
 	}
 	buffer := make([]byte, 2048)
-	
+
 	for {
 		n,error := file.Read(buffer)
 		if error != nil && error !=io.EOF {
@@ -163,11 +164,29 @@ func hello(output http.ResponseWriter, request *http.Request) {
 	}
 }
 
-func main() {
-	http.HandleFunc("/", hello)
-	http.ListenAndServe(":8080", nil)
+func submit(output http.ResponseWriter, request *http.Request) {
+	request.ParseForm()
+
+	dir := request.PostForm["dir"][0]
+	minSize := request.PostForm["minSize"][0]
+	fmt.Printf("FilePath: %s\nMinimum File Size: %s\n", dir, minSize)
+
+	//Run external program and wait for it to finish
+	cmd := exec.Command("./driver.sh", dir, minSize)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	//Send browser the the generated page
+	http.Redirect(output, request, "/out.html", 302)
 }
 
+func main() {
+	http.HandleFunc("/", hello)
+	http.HandleFunc("/submit", submit)
+	http.ListenAndServe(":8081", nil)
+}
 
 </code></pre>
 
@@ -254,7 +273,7 @@ func main(){
 	fmt.Println("Incorrect arguments")
 	fmt.Println("driver or driver <start location> <files sizes greater then>")
 	os.Exit(1)
-    
+    }
 
     directory := getData(start)
 
@@ -263,22 +282,37 @@ func main(){
 	html += "&ltlink rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css\">"
 	html += "&ltscript src=\"//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js\">&lt/script>"
 	html += "&ltscript src=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js\">"
-	html += "&lt/script>%ltlink rel=\"stylesheet\" href=\"main.css\">%lt/head>%ltbody>"
+	html += "&lt/script>&ltlink rel=\"stylesheet\" href=\"main.css\">&lt/head>&ltbody>"
 
-	html += "&ltdiv class=\"container\">%ltdiv class=\"top-bar\">%ltdiv data-spy=\"affix\" class=\"white-back\">%ltdiv class=\"page-header\">"
-	html += "&lth1>Quota%ltspan class=\"lessbold\">nizer%lt/span>%ltsmall> A friendly disk usage utility%lt/small>%lt/h1>%lt/div>%lt/div>%lt/div>"
-	html += "&lttable class=\"table\">%lttr>%ltth>Path%lt/th>%ltth>Size%lt/th>%ltth>Options%lt/th>%lt/tr>"
+	html += "&ltdiv class=\"container\">&ltdiv class=\"top-bar\">&ltdiv data-spy=\"affix\" class=\"white-back\">"
+	html += "&ltdiv class=\"page-header\">"
+	html += "&lth1>Quota&ltspan class=\"lessbold\">nizer&lt/span>&ltsmall> A friendly disk usage utility&lt/small>"
+	html += "&lt/h1>&lt/div>&lt/div>&lt/div>"
+	html += "&ltform action='/submit' method='post'>"
+	html += "&ltdiv class='form-group'>"
+	html += "&ltlabel for='dir'>Directory to analyze &lt/label>"
+	html += "&ltinput type='text' name='dir' placeholder='Directory'>"
+	html += "&lt/div>"
+	html += "&ltdiv class='form-group'>"
+	html += "&ltlabel for='minSize'>Minimum file size (bytes) &lt/label>"
+	html += "&ltinput type='text' name='minSize' value='0'>"
+	html += "&lt/div>"
+	html += "&ltdiv class='form-group'>"
+	html += "&ltinput class='btn btn-info' type='submit' value='Submit'>"
+	html += "&lt/div>"
+	html += "&lt/form>"
+	html += "&lttable class=\"table\">&lttr>&ltth>Path&lt/th>&ltth>Size&lt/th>&ltth>Options&lt/th>&lt/tr>"
 
 
 	flag := false
-	for i := len(directory)-1; i &gt= 0; i-- {
+	for i := len(directory)-1; i >= 0; i-- {
 	dir := directory[i]
 
 		//only adds items to the list that are larger than the size passed as command line arg...
-		if dir.size &gt= size {
+		if dir.size >= size {
 		flag = true;
 		count :=0
-		for ; dir.size &gt=1000; count++ {
+		for ; dir.size >=1000; count++ {
 			dir.size /= 1000
 		}
 
@@ -294,16 +328,16 @@ func main(){
 			output += " GB"
 		}
 
-		html += "&lttr>%lttd>" + dir.path  + "%lt/td>%lttd>" + output
-		html += "&lt/td>%lttd>%lta href=\"javascript:void(0)\">DELETE%lt/a>%lt/td>%lt/tr>"
+		html += "&lttr>&lttd>" + dir.path  + "&lt/td>&lttd>" + output
+		html += "&lt/td>&lttd>&lta href=\"javascript:void(0)\">DELETE&lt/a>&lt/td>&lt/tr>"
 		}
     }
 
 	if !flag {
-	html += "&lttr>%lttd>No items fit the specified search critera. Please try again.%lt/tr>%lt/td>"
+	html += "&lttr>&lttd>No items fit the specified search critera. Please try again.&lt/tr>&lt/td>"
 	}
 
-	html += "&lt/table>%lt/div>%lt/body>%lt/html>"
+	html += "&lt/table>&lt/div>&lt/body>&lt/html>"
 	fmt.Println(html);
 
 }
@@ -405,7 +439,7 @@ func main(){
 <p style="margin-bottom:60px"></p>
 
 <div class="row text-center">
-	 <a href="quotanizer/index.html">
+	 <a href="/quotanizer/form.html">
           <img class="img-responsive" style="margin-left:250px; margin-bottom:-20px; height:350px" src="http://www.qureet.com/blog/wp-content/uploads/2013/11/jumbo_gopher-4bf98fbc72cc188289ba2b458d4ce680.png" alt="Generic placeholder image">
          </a>
 	</div>
